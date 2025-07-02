@@ -15,3 +15,24 @@ def pregunta_03():
     [('A', 53), ('B', 36), ('C', 27), ('D', 31), ('E', 67)]
 
     """
+    
+    with open("files/input/data.csv", "r", encoding="utf-8") as archivo:
+        lineas = archivo.readlines()
+
+    sumas = {}
+
+    for linea in lineas:
+        partes = linea.strip().split('\t')
+        if len(partes) > 1:
+            letra = partes[0]
+            try:
+                valor = int(partes[1])
+                if letra in sumas:
+                    sumas[letra] += valor
+                else:
+                    sumas[letra] = valor
+            except ValueError:
+                continue
+
+    return sorted(sumas.items())
+

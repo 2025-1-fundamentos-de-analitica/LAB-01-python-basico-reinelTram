@@ -15,3 +15,32 @@ def pregunta_12():
     {'A': 177, 'B': 187, 'C': 114, 'D': 136, 'E': 324}
 
     """
+
+
+    with open("files/input/data.csv", "r", encoding="utf-8") as archivo:
+        lineas = archivo.readlines()
+
+    sumaPorLetra = {}
+
+    for linea in lineas:
+        partes = linea.strip().split('\t')
+        if len(partes) >= 5:
+            letra = partes[0]
+            campo = partes[4]
+            pares = campo.split(',')
+
+            sumaFila = 0
+            for par in pares:
+                if ':' in par:
+                    try:
+                        _, valor = par.split(':')
+                        sumaFila += int(valor)
+                    except ValueError:
+                        continue
+
+            if letra in sumaPorLetra:
+                sumaPorLetra[letra] += sumaFila
+            else:
+                sumaPorLetra[letra] = sumaFila
+
+    return dict(sorted(sumaPorLetra.items()))

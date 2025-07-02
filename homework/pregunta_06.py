@@ -26,3 +26,32 @@ def pregunta_06():
      ('jjj', 5, 17)]
 
     """
+
+    with open("files/input/data.csv", "r", encoding="utf-8") as archivo:
+        lineas = archivo.readlines()
+
+    valoresPorClave = {}
+
+    for linea in lineas:
+        partes = linea.strip().split('\t')
+        if len(partes) > 4:
+            campo = partes[4]
+            pares = campo.split(',')
+            for par in pares:
+                if ':' in par:
+                    clave, valor = par.split(':')
+                    try:
+                        valor = int(valor)
+                        if clave not in valoresPorClave:
+                            valoresPorClave[clave] = [valor]
+                        else:
+                            valoresPorClave[clave].append(valor)
+                    except ValueError:
+                        continue
+
+    resultado = []
+    for clave in sorted(valoresPorClave):
+        valores = valoresPorClave[clave]
+        resultado.append((clave, min(valores), max(valores)))
+
+    return resultado

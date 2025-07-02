@@ -27,3 +27,28 @@ def pregunta_08():
      (9, ['A', 'B', 'C', 'E'])]
 
     """
+
+    with open("files/input/data.csv", "r", encoding="utf-8") as archivo:
+        lineas = archivo.readlines()
+
+    asociaciones = {}
+
+    for linea in lineas:
+        partes = linea.strip().split('\t')
+        if len(partes) > 1:
+            letra = partes[0]
+            try:
+                numero = int(partes[1])
+                if numero not in asociaciones:
+                    asociaciones[numero] = set()
+                asociaciones[numero].add(letra)
+            except ValueError:
+                continue
+
+    # Convertir a lista de tuplas ordenadas
+    resultado = []
+    for numero in sorted(asociaciones):
+        letrasOrdenadas = sorted(list(asociaciones[numero]))
+        resultado.append((numero, letrasOrdenadas))
+
+    return resultado
